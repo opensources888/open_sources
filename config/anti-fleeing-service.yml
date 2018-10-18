@@ -1,0 +1,42 @@
+server:
+  port: 18103
+
+eureka:
+  instance:
+    metadata-map:
+      user.name: ${security.user.name}
+      user.password: ${security.user.password}
+
+security:
+  user:
+    name: opensource
+    password: opensource1024aB
+  oauth2:
+    client:
+      clientId: anti-fleeing-service
+      clientSecret: ${security.user.password}
+      accessTokenUri: http://${authserver.hostname}:${authserver.port}${authserver.contextPath}/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+###############################数据库配置###################################
+#spring:
+#  datasource:
+#    druid:
+#      url: jdbc:mysql://120.79.169.222:3306/neutron_star_platform?useSSL=false&characterEncoding=UTF-8
+#      driver-class-name: com.mysql.jdbc.Driver
+#      username: admin
+#      password: opensources@123
+#      initial-size: 50
+#      max-active: 100
+#      min-idle: 20
+#      max-wait: 60000
+#      pool-prepared-statements: true
+#      max-pool-prepared-statement-per-connection-size: 20
+#      validation-query: SELECT 1 FROM DUAL
+#      test-on-borrow: false
+#      test-on-return: false
+#      test-while-idle: true
+#      time-between-eviction-runs-millis: 60000
+#      filter: stat,wall,log4j
+####################################= end =#################################

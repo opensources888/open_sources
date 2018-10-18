@@ -1,0 +1,39 @@
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 60000
+server:
+  port: 8060
+
+management:
+  security:
+    enabled: false
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+zuul:
+  host: 
+    connect-timeout-millis: 60000
+    socket-timeout-millis: 60000
+  ignoredServices: '*'
+  routes:
+    auth-service:
+      path: /uaa/**
+      serviceId: auth-service
+      stripPrefix: false
+      sensitiveHeaders:
+
+    content-service:
+      path: /content/**
+      sensitiveHeaders:
+
+    wechat-service:
+      path: /wechat/**
+      sensitiveHeaders:

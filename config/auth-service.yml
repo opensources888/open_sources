@@ -1,0 +1,37 @@
+server:
+  context-path: /uaa
+  port: 5000
+
+management:
+  security:
+    enabled: false
+  context-path: /mgmt
+
+eureka:
+  instance:
+    health-check-url-path: ${server.context-path}${management.context-path}/health
+    status-page-url-path: ${server.context-path}${management.context-path}/info
+    metadata-map:
+      management.context-path: ${server.context-path}${management.context-path}
+
+###############################数据库配置###################################
+#spring:
+#  datasource:
+#    druid:
+#      url: jdbc:mysql://120.79.169.222:3306/neutron_star_platform?useSSL=false&characterEncoding=UTF-8
+#      driver-class-name: com.mysql.jdbc.Driver
+#      username: admin
+#      password: opensources@123
+#      initial-size: 50
+#      max-active: 100
+#      min-idle: 20
+#      max-wait: 60000
+#      pool-prepared-statements: true
+#      max-pool-prepared-statement-per-connection-size: 20
+#      validation-query: SELECT 1 FROM DUAL
+#      test-on-borrow: false
+#      test-on-return: false
+#      test-while-idle: true
+#      time-between-eviction-runs-millis: 60000
+#      filter: stat,wall,log4j
+####################################= end =#################################
