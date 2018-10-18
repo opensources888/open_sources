@@ -1,0 +1,153 @@
+eureka:
+  instance:
+    hostname: registry
+    prefer-ip-address: true
+  client:
+    service-url:
+      defaultZone: http://opensource:${REGISTRY_SERVER_PASSWORD:opensource1024aB}@registry:8761/eureka/
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 20000
+
+ribbon:
+  eureka:
+    enabled: true
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+
+zuul:
+  ReadTimeout: 60000
+  ConnectTimeout: 60000
+
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://120.79.169.222:3306/neutron_star_platform?useSSL=false&characterEncoding=UTF-8
+      driver-class-name: com.mysql.jdbc.Driver
+      username: admin
+      password: opensources@123
+      initial-size: 50
+      max-active: 100
+      min-idle: 20
+      max-wait: 60000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      validation-query: SELECT 1 FROM DUAL
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      filter: stat,wall,log4j
+  rabbitmq:
+    host: rabbitmq
+    port: 5672
+    username: opensource
+    password: 'opensource1024aB'
+  sleuth:
+    sampler:
+      percentage: 1
+    integration:
+      enabled: false
+    scheduled:
+      skip-pattern: "^org.*HystrixStreamTask$"
+###############################redis###################################
+  redis:
+    # cluster:
+      #（普通集群，不使用则不用开启）在群集中执行命令时要遵循的最大重定向数目。
+      # max-redirects:
+      #（普通集群，不使用则不用开启）以逗号分隔的“主机：端口”对列表进行引导。
+      # nodes:
+    # 连接工厂使用的数据库索引。
+    database: 0
+    # 连接URL，将覆盖主机，端口和密码（用户将被忽略），例如：redis://user:password@example.com:6379
+    url:
+    # Redis服务器主机。
+    host: redis
+    # 登录redis服务器的密码
+    password: 
+    # 启用SSL支持
+    ssl: false
+    pool:
+      # 池在给定时间可以分配的最大连接数。使用负值无限制
+      max-active: 500
+      # 池中“空闲”连接的最大数量。使用负值表示无限数量的空闲连接
+      max-idle: 100
+      # 连接分配在池被耗尽时抛出异常之前应该阻塞的最长时间量（以毫秒为单位）。使用负值可以无限期地阻止
+      max-wait: 10000
+      # 目标为保持在池中的最小空闲连接数。这个设置只有在正面的情况下才有效果
+      min-idle: 0
+    # Redis服务器端口
+    port: 6379
+    # sentinel:
+      # （哨兵模式，不使用则不用开启）Redis服务器的名称
+      # master:
+      # （哨兵模式，不使用则不用开启）主机：端口对的逗号分隔列表
+      # nodes:
+    # 以毫秒为单位的连接超时
+    timeout: 0
+############################### end ###################################
+
+authserver:
+    hostname: auth-service
+    port: 5000
+    contextPath: /uaa
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: http://${authserver.hostname}:${authserver.port}${authserver.contextPath}/current
+      id: ${spring.application.name:}
+    client:
+      clientId: server
+      clientSecret: server
+      accessTokenUri: http://${authserver.hostname}:${authserver.port}${authserver.contextPath}/oauth/token
+      grant-type: client_credentials
+      scope: server
+
+############################### 阿里云OSS相关配置 ###################################
+aliyun:
+  storage:
+    type: aliyun
+    oss:
+      access-key-id: XXXXXX
+      access-key-secret: XXXXXX
+      bucket-name: neutronstar   # 指定桶名
+      end-point: oss-cn-shenzhen.aliyuncs.com  # 访问域名，也指文件存储在哪个区域节点，如华北1
+      style-name: 1
+      prefix: default
+      filehost: goods  # 文件路径
+      file-path: https://neutronstar.opensource.cn/images/  # 文件访问域名
+############################### END ###################################
+
+############################### 阿里大鱼短信相关配置 ###################################
+neutronstar:
+  sms:
+    #产品名称:云通信短信API产品,开发者无需替换
+    product: Dysmsapi
+    #产品域名,开发者无需替换
+    domain: dysmsapi.aliyuncs.com
+    appkey: XXXXXX
+    secret: XXXXXX
+    #注册
+    vCodeSmsFreeSignName: XXXXXX
+    vCodeSmsTemplateCode: XXXXXX
+    #身份验证
+    renewSmsFreeSignName: XXXXXX
+    renewSmsTemplateCode: XXXXXX
+    #验证码${code}，您正尝试异地登录，若非本人操作，请勿泄露。
+    pastRenewSmsFreeSignName: 登录异常验证码
+    pastRenewSmsTemplateCode: XXXXXX
+    #验证码${code}，您正在注册成为新用户，感谢您的支持！
+    userRenewSmsFreeSignName: 用户注册验证码
+    userRenewSmsTemplateCode: XXXXXX
+    #信息变更验证码
+    pastUserRenewSmsFreeSignName: XXXXXX
+    pastUserRenewSmsTemplateCode: XXXXXX
+############################### END ###################################
+
